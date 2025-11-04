@@ -4,16 +4,19 @@ import Footer from "./Footer";
 import { BASE_URL } from "../utils/constants";
 import { useDispatch, useSelector } from "react-redux";
 import { addUser } from "../utils/userSlice";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import axios from "axios";
 
 const Body = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const hasFetched = useRef(false);
 
   const userData = useSelector((store) => store.user);
   const fetchUser = async () => {
-    if (userData) return;
+    if (hasFetched.current || userData) return;
+    hasFetched.current = true;
+
     try {
       const user = await axios.get(BASE_URL + "/profile/view", {
         withCredentials: true,
@@ -21,10 +24,9 @@ const Body = () => {
 
       dispatch(addUser(user.data));
     } catch (error) {
-      if (error.status === 401) {
+      if (error.response.status === 401) {
         navigate("/login");
       }
-      console.log(error);
     }
   };
 
