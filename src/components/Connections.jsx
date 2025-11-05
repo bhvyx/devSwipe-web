@@ -29,7 +29,12 @@ const Connections = () => {
   }, []);
 
   if (!connections) return null;
-  if (connections.length === 0) return <h1>No Connections found.</h1>;
+  if (connections.length === 0)
+    return (
+      <h1 className="flex justify-center text-2xl font-bold my-10">
+        No Connections found.
+      </h1>
+    );
 
   return (
     <div className="text-center my-10">
@@ -50,7 +55,6 @@ const Connections = () => {
                 {firstName} {lastName}
               </h2>
 
-              {/* ✅ show age/gender only if present */}
               {(age || gender) && (
                 <p className="text-sm text-gray-600">
                   {age && <span>{age}</span>}
