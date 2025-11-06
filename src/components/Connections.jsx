@@ -3,11 +3,13 @@ import { BASE_URL } from "../utils/constants";
 import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addConnections } from "../utils/connectionSlice";
+import { useNavigate } from "react-router-dom";
 
 const Connections = () => {
   const dispatch = useDispatch();
   const fetched = useRef(false);
   const connections = useSelector((store) => store.connection);
+  const navigate = useNavigate();
 
   const fetchConnections = async () => {
     try {
@@ -64,6 +66,12 @@ const Connections = () => {
               )}
 
               {about && <p className="text-gray-700 text-sm mt-2">{about}</p>}
+              <button
+                onClick={() => navigate(`/chat/${_id}`)}
+                className="mt-4 w-full bg-blue-600 text-white py-2 rounded-lg font-medium hover:bg-blue-700 transition"
+              >
+                💬 Chat
+              </button>
             </div>
           )
         )}
