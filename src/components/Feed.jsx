@@ -4,11 +4,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { addFeed } from "../utils/feedSlice";
 import { useEffect, useRef } from "react";
 import UserCard from "./UserCard";
+import { useNavigate } from "react-router-dom";
 
 const Feed = () => {
   const feed = useSelector((store) => store.feed);
   const dispatch = useDispatch();
   const calledOnce = useRef(false);
+  const navigate = useNavigate();
 
   const getFeed = async () => {
     if (feed?.length > 0) return;
@@ -18,6 +20,9 @@ const Feed = () => {
       });
       dispatch(addFeed(res?.data?.data));
     } catch (error) {
+      if (error.response.status === 401) {
+        navigate("/login");
+      }
       console.log(error.message);
     }
   };
